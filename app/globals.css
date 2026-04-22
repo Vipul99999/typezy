@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --color-canvas: #f6f7ef;
+  --color-surface: #ffffff;
+  --color-panel: #eef1e4;
+  --color-line: #d7dccd;
+  --color-ink: #132226;
+  --color-muted: #607274;
+  --color-accent: #0f766e;
+  --color-accent-soft: #dff4f0;
+  --color-success: #2a9d8f;
+  --color-danger: #c44536;
+  --color-warning: #df9d3c;
+}
+
+:root[data-theme="dark"] {
+  --color-canvas: #111a1d;
+  --color-surface: #15252a;
+  --color-panel: #1d3036;
+  --color-line: #365059;
+  --color-ink: #f1f5f2;
+  --color-muted: #c0ccc8;
+  --color-accent: #39b3a4;
+  --color-accent-soft: #1a4144;
+  --color-success: #5ad0a2;
+  --color-danger: #ef7b6a;
+  --color-warning: #f0b45b;
+  color-scheme: dark;
+}
+
+:root:not([data-theme="dark"]) {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(15, 118, 110, 0.12), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35), transparent 30%),
+    var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+:root[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at top, rgba(57, 179, 164, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 28%),
+    var(--color-canvas);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@layer components {
+  .typezy-card {
+    @apply rounded-[2rem] border border-line bg-surface shadow-none;
+  }
+
+  .typezy-card-soft {
+    @apply rounded-[1.75rem] border border-line bg-surface shadow-none;
+  }
+
+  .typezy-panel {
+    @apply rounded-2xl border border-line bg-panel;
+  }
+
+  .typezy-pill-surface {
+    @apply rounded-full border border-line bg-surface;
+  }
+}
+
+::selection {
+  background: rgba(15, 118, 110, 0.2);
+}
+
+.typezy-scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.typezy-scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.typezy-select {
+  color: var(--color-ink);
+  background-color: transparent;
+  border-radius: 1.35rem;
+}
+
+.typezy-select option,
+.typezy-select optgroup {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+}
+
+:root[data-theme="dark"] .typezy-select option,
+:root[data-theme="dark"] .typezy-select optgroup {
+  background-color: #15252a;
+  color: #f1f5f2;
+}
+
+.typezy-scroll-fade::before,
+.typezy-scroll-fade::after {
+  display: none;
+}
