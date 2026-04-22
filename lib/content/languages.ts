@@ -84,13 +84,27 @@ function getDifficultyFallbackOrder(difficulty: ContentDifficulty) {
 
 function getDifficultyContent(library: LanguageContentLibrary, difficulty: ContentDifficulty): DifficultyContentPack {
   const [primary, secondary, tertiary] = getDifficultyFallbackOrder(difficulty);
+  const primaryPack = library[primary];
+  const secondaryPack = library[secondary];
+  const tertiaryPack = library[tertiary];
+
+  const pickPack = (key: keyof DifficultyContentPack) => {
+    if (primaryPack[key].length > 0) {
+      return primaryPack[key];
+    }
+    if (secondaryPack[key].length > 0) {
+      return secondaryPack[key];
+    }
+    return tertiaryPack[key];
+  };
+
   return {
-    words: mergeUnique(library[primary].words, library[secondary].words, library[tertiary].words),
-    sentences: mergeUnique(library[primary].sentences, library[secondary].sentences, library[tertiary].sentences),
-    quotes: mergeUnique(library[primary].quotes, library[secondary].quotes, library[tertiary].quotes),
-    punctuation: mergeUnique(library[primary].punctuation, library[secondary].punctuation, library[tertiary].punctuation),
-    numbers: mergeUnique(library[primary].numbers, library[secondary].numbers, library[tertiary].numbers),
-    code: mergeUnique(library[primary].code, library[secondary].code, library[tertiary].code)
+    words: pickPack("words"),
+    sentences: pickPack("sentences"),
+    quotes: pickPack("quotes"),
+    punctuation: pickPack("punctuation"),
+    numbers: pickPack("numbers"),
+    code: pickPack("code")
   };
 }
 

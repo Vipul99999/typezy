@@ -3,7 +3,6 @@
 import { type MouseEvent as ReactMouseEvent, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import { ChevronDown, ChevronUp, RotateCcw, Settings2 } from "lucide-react";
 import { playTypeSound, warmTypeSound } from "@/lib/audio/type-sounds";
 import { buildPrompt, LANGUAGES } from "@/lib/content/languages";
@@ -116,7 +115,6 @@ export function PracticeWorkspace({ initialLanguage }: { initialLanguage?: strin
   const [windowStart, setWindowStart] = useState(0);
   const [showFinishToast, setShowFinishToast] = useState(false);
   const [sessionNotice, setSessionNotice] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
   const {
     prompt,
     typedText,
@@ -131,10 +129,6 @@ export function PracticeWorkspace({ initialLanguage }: { initialLanguage?: strin
     finishSession,
     injectKeystroke
   } = useTypingStore();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const nextPrompt = buildPrompt(
@@ -474,24 +468,12 @@ export function PracticeWorkspace({ initialLanguage }: { initialLanguage?: strin
     void playTypeSound(kind);
   };
 
-  if (!mounted) {
-    return (
-      <div className="mx-auto max-w-6xl px-3 py-4 sm:px-5 sm:py-6 lg:px-8">
-        <section className="rounded-[2rem] border border-line bg-surface/96 px-4 py-6 sm:px-6 lg:px-8">
-          <div className="rounded-[1.5rem] border border-line bg-panel/50 px-4 py-8 text-sm text-muted">
-            Loading practice workspace...
-          </div>
-        </section>
-      </div>
-    );
-  }
-
   return (
     <div className="mx-auto max-w-6xl px-3 py-4 sm:px-5 sm:py-6 lg:px-8">
-      <section className="rounded-[2rem] border border-line bg-surface/96 backdrop-blur-[2px]">
+      <section className="rounded-[2rem] border border-line bg-surface/96">
         <div
           className={cn(
-            "relative z-20 border-b border-line transition-all duration-150",
+            "relative z-20 border-b border-line",
             isTypingActive ? "px-3 py-3 sm:px-5" : "px-4 py-4 sm:px-6 lg:px-8",
             showUltraMinimal && "border-transparent pb-2"
           )}
@@ -585,11 +567,7 @@ export function PracticeWorkspace({ initialLanguage }: { initialLanguage?: strin
               </HorizontalRail>
             ) : null}
 
-            <motion.div
-              initial={false}
-              animate={{ height: setupVisible ? "auto" : 0, opacity: setupVisible ? 1 : 0, marginTop: setupVisible ? 4 : 0 }}
-              className="overflow-hidden"
-            >
+            <div className={cn("overflow-hidden", setupVisible ? "mt-1 block" : "hidden")}>
               <div className="rounded-[1.5rem] border border-line bg-panel/40 px-3 py-3 sm:px-4">
                 <div className="space-y-3">
                   <CompactScroller label="Mode">
@@ -687,13 +665,13 @@ export function PracticeWorkspace({ initialLanguage }: { initialLanguage?: strin
                   )}
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
 
         <div
           className={cn(
-            "relative z-10 transition-all duration-150",
+            "relative z-10",
             isTypingActive ? "px-3 py-4 sm:px-5" : "px-4 py-5 sm:px-6 lg:px-8 lg:py-6"
           )}
         >
@@ -722,16 +700,11 @@ export function PracticeWorkspace({ initialLanguage }: { initialLanguage?: strin
             ) : null}
 
             {showFinishToast && finishedSession ? (
-              <motion.div
-                initial={{ opacity: 0, y: -10, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -10, scale: 0.98 }}
-                className="mb-3 inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accentSoft px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-accent shadow-[0_12px_30px_-18px_rgba(15,118,110,0.65)]"
-              >
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accentSoft px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-accent shadow-[0_12px_30px_-18px_rgba(15,118,110,0.65)]">
                 Session complete
                 <span className="rounded-full bg-panel px-2 py-1 text-ink">{finishedSession.metrics.netWpm} wpm</span>
                 <span className="rounded-full bg-panel px-2 py-1 text-ink">{finishedSession.metrics.accuracy}% acc</span>
-              </motion.div>
+              </div>
             ) : null}
 
             {sessionNotice ? (
@@ -740,12 +713,9 @@ export function PracticeWorkspace({ initialLanguage }: { initialLanguage?: strin
               </div>
             ) : null}
 
-            <motion.div
-              initial={false}
-              animate={{ y: isRunning ? 0 : 2 }}
-              transition={{ duration: 0.12 }}
+            <div
               className={cn(
-                "relative overflow-hidden rounded-[1.5rem] border border-line transition-colors duration-150",
+                "relative overflow-hidden rounded-[1.5rem] border border-line",
                 viewSurfaceClass,
                 isPro ? "min-h-[330px] sm:min-h-[360px]" : "min-h-[370px] sm:min-h-[410px]"
               )}
@@ -885,7 +855,7 @@ export function PracticeWorkspace({ initialLanguage }: { initialLanguage?: strin
                   })}
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             <div
               className={cn(
