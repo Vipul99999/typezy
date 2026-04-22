@@ -12,13 +12,19 @@ Typezy is a **fast, multilingual, local-first typing practice PWA** built with *
 
 It is designed to feel calm before typing, invisible during typing, and rewarding after typing.
 
+---
+
 ## Live Link 
 
-![Live Link] (https://typezy-five.vercel.app/)
+[Live Link] (https://typezy-five.vercel.app/)
 
-### Typezy Application Demo
+---
+
+### 🔹Typezy Application Demo
 
 ![Typezy Application Demo](./Typezy.gif)
+
+---
 
 ## What Typezy Is
 
